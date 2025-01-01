@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose, { ConnectOptions } from "mongoose";
 import dotenv from "dotenv";
+import bookRoutes from './routes/bookRoutes';
 
 dotenv.config();
 
@@ -8,6 +9,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use('/api', bookRoutes);
 
 mongoose
         .connect(process.env.MONGO_URI as string, { useNewUrlParser: true, useUnifiedTopology: true } as ConnectOptions)
