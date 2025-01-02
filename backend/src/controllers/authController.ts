@@ -6,6 +6,7 @@ export const registerPatron = async (req: Request, res: Response) => {
     const { id, username, password } = req.body;
 
     try {
+        // TODO: check that id is correct length part of the database of existing library card numbers
         const hashedPassword = await hashPassword(password);
         const user = await User.create({ _id: id, username, password: hashedPassword, role: 'patron' });
 
