@@ -23,7 +23,8 @@ export const loginUser = async (req: Request, res: Response) => {
         const user = await User.findOne({ username });
 
         if (!user || !(await comparePassword(password, user.password))) {
-            return res.status(401).json({ error: 'Invalid username or password' });
+            res.status(401).json({ error: 'Invalid username or password' });
+            return;
         }
 
         const token = generateToken({ id: user._id, role: user.role });
