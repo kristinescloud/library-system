@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user';
 import { hashPassword, comparePassword, generateToken } from '../utils/auth';
-import { isExistingPatronID, isExistingLibrarianID } from '../utils/validateUserID';
+import { isExistingPatronID, isExistingLibrarianID } from '../utils/validation';
 
 export const registerUser = async (req: Request, res: Response) => {
     const { id, username, password, role } = req.body;
