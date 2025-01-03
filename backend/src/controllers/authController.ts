@@ -1,14 +1,31 @@
 import { Request, Response } from 'express';
 import { User } from '../models/user';
 import { hashPassword, comparePassword, generateToken } from '../utils/auth';
+import { isExistingPatronID, isExistingLibrarianID } from '../utils/validateUserID';
 
-export const registerPatron = async (req: Request, res: Response) => {
-    const { id, username, password } = req.body;
+export const registerUser = async (req: Request, res: Response) => {
+    const { id, username, password, role } = req.body;
 
     try {
-        // TODO: check that id is correct length part of the database of existing library card numbers
+        if (role === 'patron') {
+            if (!id || !isExistingPatronID(id)) {
+                res.status(401).json({ error: 'Invalid or missing library card number.' });
+                return;
+            }
+        }
+        else if (role === 'librarian') {
+            if (!id || !isExistingLibrarianID(id)) {
+                res.status(401).json({ error: 'Invalid or missing librarian ID.' });
+                return;
+            }
+        }
+        else {
+            res.status(401).json({ error: 'Invalid or unspecified role.' });
+            return;
+        }
+        
         const hashedPassword = await hashPassword(password);
-        const user = await User.create({ _id: id, username, password: hashedPassword, role: 'patron' });
+        const user = await User.create({ _id: id, username, password: hashedPassword, role});
 
         res.status(201).json({ message: 'User registered successfully.' });
     } catch (err: any) {

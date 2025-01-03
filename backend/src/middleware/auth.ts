@@ -9,14 +9,16 @@ export const authorizeRole = (role: string) => {
         const token = req.headers.authorization?.split(' ')[1];
 
         if (!token) {
-            return res.status(401).json({ error: 'Access denied. No token provided.' });
+            res.status(401).json({ error: 'Access denied. No token provided.' });
+            return;
         }
 
         try {
             const decoded = jwt.verify(token, SECRET_KEY) as { id: string; role: string };
 
             if (decoded.role !== role) {
-                return res.status(402).json({ error: 'Access denied. Insufficient permissions.'});
+                res.status(402).json({ error: 'Access denied. Insufficient permissions.'});
+                return;
             }
 
             req.user = decoded;
