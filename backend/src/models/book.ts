@@ -14,9 +14,9 @@ const ISBNSubSchema = new mongoose.Schema(
 const BookSchema = new mongoose.Schema({
     title: { type: String, required: true, trim: true },
     author: { type: String, required: true, trim: true},
-    category: { type: String, required: true, trim: true },
+    category: { type: String, trim: true },
     genre: { type: String, trim: true },
-    publicationDate: { type: Date, required: true },
+    publicationDate: { type: String, required: true },
     isbn: {
         type: ISBNSubSchema,
         validate: {

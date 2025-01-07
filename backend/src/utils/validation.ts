@@ -1,20 +1,16 @@
-import librarianData from '../data/librarianIDs.json';
-import patronData from '../data/patronIDs.json';
+import { librarianData } from '../data/librarianIDs';
+import { patronData } from '../data/patronIDs';
 
 export const isValidPatronID = (patronID: string): boolean => {
-    if (patronID.length !== 14) return false;
-    let isNum = /^\d+$/.test(patronID);
-    if (!isNum) return false;
-    return true;
+    const re = /^[0-9]{14}$/;
+    let isValid = re.test(patronID);
+    return isValid;
 };
 
 export const isValidLibrarianID = (librarianID: string): boolean => {
-    if (librarianID.length !== 11) return false;
-    if (librarianID.charAt(0) !== 'L') return false;
-    if (!(65 <= librarianID.charCodeAt(10)) || !(librarianID.charCodeAt(10) <= 90)) return false;
-    let isNum = /^\d+$/.test(librarianID.substring(1,10));
-    if (!isNum) return false;
-    return true;
+    const re = /^L[0-9]{9}[A-Z]$/
+    let isValid = re.test(librarianID);
+    return isValid;
 };
 
 export const isExistingPatronID = (patronID: string): boolean => {

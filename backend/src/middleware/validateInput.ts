@@ -9,13 +9,14 @@ export const validateRegisterInput = async (req: Request, res: Response, next: N
     res.status(400).json({ error: 'Username is required and must be a string.' });
     return;
   }
+
   const existingUser = await User.findOne({ username });
   if (existingUser) {
     res.status(400).json({ error: 'Username is already taken.' });
     return;
   }
  
-  if (!password || typeof password !== 'string' || password.length < 6) {
+  if (!password || typeof password !== 'string' || password.length < 6 || password.length > 50) {
     res.status(400).json({ error: 'Password is required and must be at least 6 characters long.' });
     return;
   }
@@ -25,14 +26,23 @@ export const validateRegisterInput = async (req: Request, res: Response, next: N
     return;
   }
 
-  if (role === 'patron' && (!id || !isValidPatronID(id) || !isExistingPatronID(id))) {
-    res.status(400).json({ error: 'Library card number is required for patrons.' });
-    return
-  }
-
-  if (role === 'librarian' && (!id || !isValidLibrarianID(id) || !isExistingLibrarianID(id))) {
+  if (role == 'patron') {
+    if (!id) {
+      res.status(400).json({ error: 'Library card number is required for patrons.' });
+      return;
+    }
+    if (!isValidPatronID(id)) {
+      res.status(400).json({ error: 'Library card number is invalid.' });
+      return;
+    }
+    if (!isExistingPatronID(id)) {
+      res.status(400).json({ error: 'Library card number not found.' });
+      return;
+    }
+    
+  } else if (role == 'librarian' && (!id || !isValidLibrarianID(id) || !isExistingLibrarianID(id))) {
     res.status(400).json({ error: 'Librarian ID is required for librarians.' });
-    return
+    return;
   }
 
   next();

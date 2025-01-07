@@ -4,7 +4,7 @@ import { hashPassword, comparePassword, generateToken } from '../utils/auth';
 import { isExistingPatronID, isExistingLibrarianID } from '../utils/validation';
 
 export const registerUser = async (req: Request, res: Response) => {
-    const { id, username, password, role } = req.body;
+    const { id, username, password, role } = req.body
 
     try {
         if (role === 'patron') {
@@ -15,7 +15,7 @@ export const registerUser = async (req: Request, res: Response) => {
         }
         else if (role === 'librarian') {
             if (!id || !isExistingLibrarianID(id)) {
-                res.status(401).json({ error: 'Invalid or missing librarian ID.' });
+                res.status(402).json({ error: 'Invalid or missing librarian ID.' });
                 return;
             }
         }
@@ -27,7 +27,7 @@ export const registerUser = async (req: Request, res: Response) => {
         const hashedPassword = await hashPassword(password);
         const user = await User.create({ _id: id, username, password: hashedPassword, role});
 
-        res.status(201).json({ message: 'User registered successfully.' });
+        res.status(200).json({ message: 'User registered successfully.' });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
     }

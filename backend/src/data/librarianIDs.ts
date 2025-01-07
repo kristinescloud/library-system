@@ -1,5 +1,5 @@
-{
-    "librarianData": {
+
+export const librarianData = {
         "L525889031C": true,
         "L518587163Q": true,
         "L848742685D": true,
@@ -100,5 +100,4 @@
         "L349999177Z": true,
         "L105228860F": true,
         "L815420604K": true
-    }
-}
+};

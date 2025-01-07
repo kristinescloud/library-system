@@ -7,6 +7,4 @@ const UserSchema = new mongoose.Schema({
     role: { type: String, enum: ['patron', 'librarian'], required: true},
 });
 
-UserSchema.index({ username: 1 });
-
 export const User = mongoose.model('User', UserSchema);

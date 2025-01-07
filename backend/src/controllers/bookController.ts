@@ -24,10 +24,16 @@ export const listAllBooks = async (req: Request, res: Response) => {
 
 // query parameters – criteria: String, keyword: String
 export const searchBooks = async (req: Request, res: Response) => {
-    const { criteria, keyword } = req.query;
+    const searchParams = req.query.params as string;
+    if (!searchParams) {
+        res.status(400).json({ error: 'Search parameter is required' });
+        return;
+    }
+    
+    const [criteria, keyword] = searchParams.split(':');
 
-    if (!criteria || !keyword) {
-        res.status(401).json({ error: 'Criteria and keyword are needed' });
+    if (!criteria) {
+        res.status(401).json({ error: 'Criteria is needed in order to search.' });
         return;
     }
 
@@ -50,16 +56,19 @@ export const viewBookDetails = async (req: Request, res: Response) => {
         let book;
         switch (bookID.length) {
             case 13:
-                book = await Book.findOne({ 'isbn.isbn13': bookID });
+                book = await Book.find({ 'isbn.isbn13': bookID });
+                break;
             case 10:
-                book = await Book.findOne({ 'isbn.isbn10': bookID });
+                book = await Book.find({ 'isbn.isbn10': bookID });
+                break;
             case 9:
-                book = await Book.findOne({ 'isbn.sbn': bookID });
+                book = await Book.find({ 'isbn.sbn': bookID });
+                break;
             default:
-                book = await Book.findOne({ 'isbn.other': bookID });
+                book = await Book.find({ 'isbn.other': bookID });
         }
         if (!book) {
-            res.status(404).json({ error: 'Book not found' });
+            res.status(404).json({ error: `Book not found, ${bookID.length}` });
             return;
         }
         res.status(200).json(book);
