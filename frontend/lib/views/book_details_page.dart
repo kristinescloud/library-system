@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BookDetailsPage extends StatelessWidget {
   final Map<String, dynamic> book;
 
-  const BookDetailsPage({Key? key, required this.book}) : super(key: key);
+  const BookDetailsPage({super.key, required this.book});
 
   @override
   Widget build(BuildContext context) {

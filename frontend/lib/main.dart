@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
- import 'package:shadcn_ui/shadcn_ui.dart';
-import 'home_page.dart';
-import 'account_page.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:library_system_frontend/views/home_page.dart';
+import 'package:library_system_frontend/views/login_register_page.dart';
+import 'package:library_system_frontend/views/account_page.dart';
+import 'package:library_system_frontend/providers/auth_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -29,29 +36,31 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainNavigation extends StatefulWidget {
+class MainNavigation extends ConsumerStatefulWidget {
   const MainNavigation({super.key});
 
   @override
-  State<MainNavigation> createState() => _MainNavigationState();
+  ConsumerState<MainNavigation> createState() => _MainNavigationState();
 }
 
-class _MainNavigationState extends State<MainNavigation> {
+class _MainNavigationState extends ConsumerState<MainNavigation> {
   int _selectedIndex = 0;
-
-  static final List<Widget> _pages = <Widget>[
-    HomePage(),
-    AccountPage(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
+    final List<Widget> _pages = <Widget>[
+      HomePage(),
+      authState.isAuthenticated ? AccountPage() : LoginRegisterPage(),
+    ];
+
+    void _onItemTapped(int index) {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+
     return Scaffold(
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(

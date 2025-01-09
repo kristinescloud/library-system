@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:library_system_frontend/providers/auth_provider.dart';
 
-class UserAccountPage extends StatelessWidget {
-  final String id;
-  final String username;
-  final String password; // Hidden in UI
-  final String role;
-
-  const UserAccountPage({super.key, 
-    required this.id,
-    required this.username,
-    required this.password,
-    required this.role,
-  });
+class AccountPage extends ConsumerWidget {
+  const AccountPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('My Account'),
@@ -26,26 +20,26 @@ class UserAccountPage extends StatelessWidget {
           children: [
             // Common Information
             Text(
-              'Username: $username',
+              'Username: ${authState.username}',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Password: ${'*' * password.length}', // Hidden password
+              'Password: ${'*' * authState.password.length}', // Hidden password
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8.0),
             Text(
-              'ID Number: $id',
+              'ID Number: ${authState.id}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 8.0),
             Text(
-              'Role: ${role[0].toUpperCase()}${role.substring(1)}', // Capitalize role
+              'Role: ${authState.role}',
               style: TextStyle(fontSize: 18),
             ),
             SizedBox(height: 16.0),
-            if (role == 'librarian') ...[
+            if (authState.role == 'librarian') ...[
               Divider(),
               Text(
                 'Librarian Functions',
@@ -62,6 +56,8 @@ class UserAccountPage extends StatelessWidget {
 }
 
 class LibrarianMenu extends StatelessWidget {
+  const LibrarianMenu({super.key});
+
   void _handleMenuSelection(BuildContext context, String action) {
     // Placeholder for future functionality
     ScaffoldMessenger.of(context).showSnackBar(
