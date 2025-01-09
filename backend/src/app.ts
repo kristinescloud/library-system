@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import bookRoutes from './routes/bookRoutes';
 import authRoutes from './routes/authRoutes'
 
-dotenv.config();
+require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;

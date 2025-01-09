@@ -38,13 +38,12 @@ export const loginUser = async (req: Request, res: Response) => {
 
     try {
         const user = await User.findOne({ username });
-
+        
         if (!user || !(await comparePassword(password, user.password))) {
             res.status(401).json({ error: 'Invalid username or password' });
             return;
         }
-
-        const token = generateToken({ id: user._id, role: user.role });
+        const token = generateToken({ id: user._id, username: user.username, password: user.password, role: user.role });
         res.status(200).json({ token });
     } catch (err: any) {
         res.status(400).json({ error: err.message });
