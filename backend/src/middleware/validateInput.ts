@@ -28,21 +28,34 @@ export const validateRegisterInput = async (req: Request, res: Response, next: N
 
   if (role == 'patron') {
     if (!id) {
-      res.status(400).json({ error: 'Library card number is required for patrons.' });
+      res.status(400).json({ error: 'Patron ID is required for patrons.' });
       return;
     }
     if (!isValidPatronID(id)) {
-      res.status(400).json({ error: 'Library card number is invalid.' });
+      res.status(400).json({ error: 'Patron ID is invalid.' });
       return;
     }
     if (!isExistingPatronID(id)) {
-      res.status(400).json({ error: 'Library card number not found.' });
+      res.status(400).json({ error: 'Patron ID not found.' });
       return;
     }
     
-  } else if (role == 'librarian' && (!id || !isValidLibrarianID(id) || !isExistingLibrarianID(id))) {
-    res.status(400).json({ error: 'Librarian ID is required for librarians.' });
-    return;
+  } else if (role == 'librarian') {
+    console.log(id);
+    console.log(isValidLibrarianID(id));
+    console.log(isExistingLibrarianID(id));
+    if (!id) {
+      res.status(400).json({ error: 'Librarian ID is required for librarians.' });
+      return;
+    }
+    if (!isValidLibrarianID(id)) {
+      res.status(400).json({ error: 'Librarian ID is invalid.' });
+      return;
+    } 
+    if (!isExistingLibrarianID(id)) {
+      res.status(400).json({ error: 'Librarian ID not found.' });
+      return;
+    }
   }
 
   next();
