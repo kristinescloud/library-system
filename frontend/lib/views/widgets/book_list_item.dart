@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:library_system_frontend/models/book.dart';
 
 class BookListItem extends StatelessWidget {
-  final Map<String, dynamic> book;
+  final Book book;
   final VoidCallback onTap;
 
   const BookListItem({super.key, required this.book, required this.onTap});
@@ -17,8 +18,8 @@ class BookListItem extends StatelessWidget {
           color: Colors.grey[300], // Placeholder for book cover image
           child: Icon(Icons.book, color: Colors.grey[700]),
         ),
-        title: Text(book['title']),
-        subtitle: Text('Author: ${book['author']}\nQuantity: ${book['quantity']}'),
+        title: Text(book.title),
+        subtitle: Text('Author: ${book.author}\nQuantity: ${book.quantity}'),
         onTap: onTap,
       ),
     );

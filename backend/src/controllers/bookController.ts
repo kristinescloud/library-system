@@ -53,20 +53,7 @@ export const viewBookDetails = async (req: Request, res: Response) => {
     const { bookID } = req.params;
 
     try {
-        let book;
-        switch (bookID.length) {
-            case 13:
-                book = await Book.find({ 'isbn.isbn13': bookID });
-                break;
-            case 10:
-                book = await Book.find({ 'isbn.isbn10': bookID });
-                break;
-            case 9:
-                book = await Book.find({ 'isbn.sbn': bookID });
-                break;
-            default:
-                book = await Book.find({ 'isbn.other': bookID });
-        }
+        const book = await Book.find({ 'isbn': bookID });
         if (!book) {
             res.status(404).json({ error: `Book not found, ${bookID.length}` });
             return;
@@ -83,29 +70,10 @@ export const updateBookDetails = async (req: Request, res: Response) => {
     const updatedDetails = req.body;
 
     try {
-        let book;
-        switch (bookID.length) {
-            case 13:
-                book = await Book.findOneAndUpdate(
-                    { 'isbn.isbn13': bookID },
-                    updatedDetails,
-                    { new: true, runValidators: true });
-            case 10:
-                book = await Book.findOneAndUpdate(
-                    { 'isbn.isbn10': bookID },
-                    updatedDetails,
-                    { new: true, runValidators: true });
-            case 9:
-                book = await Book.findOneAndUpdate(
-                    { 'isbn.sbn': bookID },
-                    updatedDetails,
-                    { new: true, runValidators: true });
-            default:
-                book = await Book.findOneAndUpdate(
-                    { 'isbn.other': bookID },
-                    updatedDetails,
-                    { new: true, runValidators: true});
-        }
+        const book = await Book.findOneAndUpdate(
+            { 'isbn': bookID },
+            updatedDetails,
+            { new: true, runValidators: true });
         if (!book) {
             res.status(404).json({ error: 'Book not found' });
             return;
@@ -121,17 +89,7 @@ export const removeBook = async (req: Request, res: Response) => {
     const { bookID } = req.params;
 
     try {
-        let book;
-        switch (bookID.length) {
-            case 13:
-                book = await Book.findOneAndDelete({ 'isbn.isbn13': bookID });
-            case 10:
-                book = await Book.findOneAndDelete({ 'isbn.isbn10': bookID });
-            case 9:
-                book = await Book.findOneAndDelete({ 'isbn.sbn': bookID });
-            default:
-                book = await Book.findOneAndDelete({ 'isbn.other': bookID });
-        }
+        const book = await Book.findOneAndDelete({ 'isbn': bookID });
         if (!book) {
             res.status(404).json({ error: 'Book not found' });
             return;

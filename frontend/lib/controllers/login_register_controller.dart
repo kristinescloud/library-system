@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:developer';
+// import 'dart:developer';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:library_system_frontend/models/user.dart';
 import 'package:library_system_frontend/providers/auth_provider.dart';
@@ -75,17 +75,17 @@ class LoginRegisterController {
         final responseData = json.decode(response.body);
         final token = responseData['token'];
         if (token == null) throw Exception('Token not found in response.');
-        log("arrived");
+        // log("arrived");
         final decodedToken = JwtDecoder.decode(token);
-        log(decodedToken.toString());
+        // log(decodedToken.toString());
         final user = User.fromJson(decodedToken);
-        log(user.toString());
+        // log(user.toString());
         // final userID = decodedToken['id'];
         // final userRole = decodedToken['role'];
 
         // update the authentication state
         ref.read(authProvider.notifier).login(token, user.role);
-        log("arrived2");
+        // log("arrived2");
 
         // return the authenticated user
         return user;

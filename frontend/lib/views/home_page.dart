@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:library_system_frontend/models/book.dart';
 // import 'package:http/http.dart' as http;
 // import 'dart:convert';
 import 'dart:developer';
@@ -18,7 +19,7 @@ class HomePage extends ConsumerStatefulWidget {
 class _HomePageState extends ConsumerState<HomePage> {
   final TextEditingController _searchController = TextEditingController();
   String _searchCriteria = 'title';
-  List<dynamic>? _books;
+  List<Book>? _books;
   bool _isLoading = false;
 
   void getAllBooks() async {
@@ -139,18 +140,22 @@ class _HomePageState extends ConsumerState<HomePage> {
                         itemCount: _books?.length,
                         itemBuilder: (context, index) {
                           final book = _books?[index];
-                          return BookListItem(
-                            book: book,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      BookDetailsPage(book: book),
-                                ),
-                              );
-                            },
-                          );
+                          if (book != null) {
+                            return BookListItem(
+                              book: book,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        BookDetailsPage(book: book),
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            return SizedBox.shrink();
+                          }
                         },
                       ),
           ),

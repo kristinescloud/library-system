@@ -180,21 +180,6 @@ class _LoginRegisterPageState extends ConsumerState<LoginRegisterPage> {
                               _usernameController.text,
                               _passwordController.text
                             );
-                            if (user != null) {
-                              if (context.mounted) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AccountPage(
-                                      // id: user.id,
-                                      // username: user.username,
-                                      // password: user.password,
-                                      // role: user.role
-                                    ), 
-                                  ),
-                                );
-                              }
-                            }
                           } else {
                             final user = User(
                               id: _idController.text, 
